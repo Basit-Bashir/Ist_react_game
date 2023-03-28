@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
 
 function App() {
+  const [points, setPoints] = useState([]);
+  const handleClick = (e) => {
+    // console.log(e);
+    const { clientX, clientY } = e;
+    setPoints([
+      ...points,
+      {
+        x: clientX,
+        y: clientY,
+      },
+    ]);
+  };
+  const handleUndo = () => {
+    // console.log("hello");
+    const newPoints = [...points];
+    newPoints.pop();
+    setPoints(newPoints);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <button onClick={handleUndo}>Undo!</button>
+      <div className="App" onClick={handleClick}>
+        {points.map((point) => (
+          <div
+            className="point"
+            style={{ left: point.x - 5 + "px", top: point.y - 5 + "px" }}
+          ></div>
+        ))}
+      </div>
+    </>
   );
 }
 
